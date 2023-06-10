@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Publink.Rest.Models
+namespace Publink.Rest.Models.Dto
 {
-	public class Post
+	public class PostDto
 	{
-		public int Id { get; set; }
-
+		[Required]
 		public string Title { get; set; }
 
+		[Required]
 		public string Description { get; set; }
 
+		[Required]
 		public string ImgUrl { get; set; }
 	}
 }
