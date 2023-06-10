@@ -18,7 +18,7 @@ namespace Publink.Rest.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAllRandomPosts()
 		{
-			var posts = await _postService.GetAllRandomPosts();
+			var posts = await _postService.GetAllRandom();
 
 			return Ok(posts);
 		}
@@ -26,7 +26,7 @@ namespace Publink.Rest.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create([FromBody] PostDto post)
 		{
-			var res = await _postService.AddPost(post);
+			var res = await _postService.Create(post);
 
 			return Ok(res);
 		}

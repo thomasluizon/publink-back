@@ -15,7 +15,7 @@ namespace Publink.Rest.Services
 			_dbContext = dbContext;
 		}
 
-		public async Task<IEnumerable<Post>> GetAllRandomPosts()
+		public async Task<IList<Post>> GetAll()
 		{
 			var query = "SELECT * FROM Post";
 
@@ -26,7 +26,7 @@ namespace Publink.Rest.Services
 			return posts.ToList();
 		}
 
-		public async Task<Post> AddPost(PostDto post)
+		public async Task<Post> Create(PostDto post)
 		{
 			var query = @"INSERT INTO Post (
 										 title,
@@ -54,6 +54,19 @@ namespace Publink.Rest.Services
 			});
 
 			return res;
+		}
+
+		public async Task<Post> GetById(int id)
+		{
+			var query = @"SELECT *
+                         FROM Post
+                        WHERE id = @id";
+
+			using var connection = _dbContext.CreateConnection();
+
+			var post = await connection.QueryFirstOrDefaultAsync<Post>(query, new { id });
+
+			return post;
 		}
 	}
 }

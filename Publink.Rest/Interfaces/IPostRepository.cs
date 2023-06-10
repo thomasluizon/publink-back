@@ -5,7 +5,8 @@ namespace Publink.Rest.Interfaces
 {
 	public interface IPostRepository
 	{
-		Task<IEnumerable<Post>> GetAllRandomPosts();
-		Task<Post> AddPost(PostDto post);
+		Task<IList<Post>> GetAll();
+		Task<Post> Create(PostDto post);
+		Task<Post> GetById(int id);
 	}
 }
