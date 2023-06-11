@@ -4,13 +4,6 @@ using Publink.Rest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = new ConfigurationBuilder()
-	.SetBasePath(AppContext.BaseDirectory)
-	.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-	.AddEnvironmentVariables()
-	.Build();
-;
-
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
