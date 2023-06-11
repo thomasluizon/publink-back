@@ -30,5 +30,13 @@ namespace Publink.Rest.Controllers
 
 			return Ok(res);
 		}
+
+		[HttpGet("{id:int}")]
+		public async Task<IActionResult> GetByIdAndRandom([FromRoute] int id)
+		{
+			var res = await _postService.GetByIdAndRandom(id, 4);
+
+			return Ok(res);
+		}
 	}
 }
