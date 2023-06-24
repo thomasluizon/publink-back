@@ -8,10 +8,12 @@ namespace Publink.Rest.Services
 	public class PostService : IPostService
 	{
 		private readonly IPostRepository _postsRepository;
+		private readonly ILogger _logger;
 
-		public PostService(IPostRepository postsRepository)
+		public PostService(IPostRepository postsRepository, ILogger logger)
 		{
 			_postsRepository = postsRepository;
+			_logger = logger;
 		}
 
 		public async Task<Post> Create(PostDto post)

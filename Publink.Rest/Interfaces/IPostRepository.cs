@@ -7,6 +7,6 @@ namespace Publink.Rest.Interfaces
 	{
 		Task<IList<Post>> GetAll();
 		Task<Post> Create(PostDto post);
-		Task<Post> GetById(int id);
+		Task<Post?> GetById(int id);
 	}
 }

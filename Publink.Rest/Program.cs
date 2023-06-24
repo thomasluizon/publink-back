@@ -1,5 +1,6 @@
 using Publink.Rest.Context;
 using Publink.Rest.Interfaces;
+using Publink.Rest.Repository;
 using Publink.Rest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
