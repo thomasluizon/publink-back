@@ -36,6 +36,11 @@ namespace Publink.Rest.Controllers
 		{
 			var res = await _postService.GetByIdAndRandom(id, 4);
 
+			if (!res.Any())
+			{
+				return BadRequest(res);
+			}
+
 			return Ok(res);
 		}
 	}
