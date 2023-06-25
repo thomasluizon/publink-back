@@ -5,7 +5,7 @@ namespace Publink.Rest.Models
 	public class Post
 	{
 		[Required]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		public string? Title { get; set; }
@@ -15,5 +15,8 @@ namespace Publink.Rest.Models
 
 		[Required]
 		public string? ImgUrl { get; set; }
+
+		[Required]
+		public Guid UserId { get; set; }
 	}
 }

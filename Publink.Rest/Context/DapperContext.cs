@@ -1,5 +1,5 @@
-﻿using MySqlConnector;
-using System.Data;
+﻿using System.Data;
+using MySqlConnector;
 
 namespace Publink.Rest.Context
 {
@@ -18,10 +18,12 @@ namespace Publink.Rest.Context
 		{
 			try
 			{
+				Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
 				_logger.LogInformation("Connecting to database");
-			 
+
 				return new MySqlConnection(_connectionString);
-			} 
+			}
 			catch (Exception ex)
 			{
 				_logger.LogError("Error while connecting to database: Message => {Message} - Stack Trace => {StackTrace}", ex.Message, ex.StackTrace);

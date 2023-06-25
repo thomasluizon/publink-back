@@ -1,9 +1,11 @@
-﻿using Publink.Rest.Models;
+﻿using Publink.Rest.Enums;
+using Publink.Rest.Models.Dto.Users;
 
 namespace Publink.Rest.Interfaces.Services
 {
 	public interface IAuthService
 	{
-        User? GetUser(string email, string password);
+		Task<Tuple<string, UserResponseDto>?> Login(UserLoginDto userLoginDto);
+		Task<Tuple<bool, ErrorTypes?>> Register(UserRegisterDto userRegisterDto);
 	}
 }
