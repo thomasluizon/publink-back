@@ -3,10 +3,10 @@ using Publink.Rest.Models.Dto;
 
 namespace Publink.Rest.Interfaces.Repository
 {
-    public interface IPostRepository
-    {
-        Task<IList<Post>> GetAll();
-        Task<Post> Create(PostDto post);
-        Task<Post?> GetById(int id);
-    }
+	public interface IPostRepository
+	{
+		Task<IList<Post>> GetAll();
+		Task<Post> Create(PostDto post);
+		Task<Post?> GetById(int id);
+	}
 }

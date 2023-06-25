@@ -94,7 +94,8 @@ namespace Publink.Rest.Repository
 
 				var post = await connection.QueryFirstOrDefaultAsync<Post>(query, new { id });
 
-				if (post != null) return post;
+				if (post != null)
+					return post;
 
 				_logger.LogError("Post with id {Id} not found", id);
 				return null;

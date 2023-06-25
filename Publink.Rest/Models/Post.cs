@@ -15,5 +15,8 @@ namespace Publink.Rest.Models
 
 		[Required]
 		public string? ImgUrl { get; set; }
+
+		[Required]
+		public Guid UserId { get; set; }
 	}
 }

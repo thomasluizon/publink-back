@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Publink.Rest.Context;
@@ -77,7 +76,8 @@ namespace Publink.Rest.Extensions
 			services.AddScoped<IPostRepository, PostRepository>();
 			services.AddScoped<IPostService, PostService>();
 
-			services.AddScoped<IAuthRepository, AuthRepository>();
+			services.AddSingleton<IAuthRepository, AuthRepository>();
+			//services.AddScoped<IAuthRepository, AuthRepository>();
 			services.AddScoped<IAuthService, AuthService>();
 
 			services.AddScoped<ITokenService, TokenService>();

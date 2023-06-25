@@ -16,9 +16,12 @@ namespace Publink.Rest.Models
 		public string? Username { get; set; }
 
 		[Required]
-		public string? Password { get; set; }
+		public string? PasswordHash { get; set; }
 
 		[Required]
 		public Roles Role { get; set; }
+
+		[Required]
+		public string? Salt { get; set; }
 	}
 }
