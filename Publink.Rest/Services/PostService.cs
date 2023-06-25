@@ -17,11 +17,11 @@ namespace Publink.Rest.Services
 			_logger = logger;
 		}
 
-		public async Task<Post> Create(PostDto post)
+		public async Task<Post> Create(PostDto post, Guid userId)
 		{
 			_logger.LogInformation("Calling create on post repository with title {Title}", post.Title);
 
-			var res = await _postsRepository.Create(post);
+			var res = await _postsRepository.Create(post, userId);
 
 			return res;
 		}
@@ -55,16 +55,7 @@ namespace Publink.Rest.Services
 			return randomPosts;
 		}
 
-		public async Task<Post?> GetById(int id)
-		{
-			_logger.LogInformation("Getting post with id {Id}", id);
-
-			var post = await _postsRepository.GetById(id);
-
-			return post ?? null;
-		}
-
-		public async Task<IList<Post>> GetByIdAndRandom(int id, int randomLength)
+		public async Task<IList<Post>> GetByIdAndRandom(Guid id, int randomLength)
 		{
 
 			_logger.LogInformation("Getting post with id {Id}, and {AmountOfPosts} random posts", id, randomLength);
@@ -99,6 +90,24 @@ namespace Publink.Rest.Services
 				posts.Add(p);
 				i++;
 			}
+
+			return posts;
+		}
+
+		public async Task<Post?> GetById(Guid id)
+		{
+			_logger.LogInformation("Getting post with id {Id}", id);
+
+			var post = await _postsRepository.GetById(id);
+
+			return post ?? null;
+		}
+
+		public async Task<IList<Post>> GetAllPostsByUserId(Guid userId)
+		{
+			_logger.LogInformation("Getting all posts from user with id {UserId}", userId);
+
+			var posts = await _postsRepository.GetAllPostsByUserId(userId);
 
 			return posts;
 		}

@@ -40,38 +40,51 @@ namespace Publink.Rest.Repository
 			}
 		}
 
-		public async Task<Post> Create(PostDto post)
+		public async Task<Post> Create(PostDto post, Guid userId)
 		{
 			try
 			{
 				_logger.LogInformation("Creating post with title: {Title} in the database", post.Title);
 
 				const string query = @"INSERT INTO Post (
-											 title,
-											 description,
-											 imgUrl
+										    Id,
+											 Title,
+											 Description,
+											 ImgUrl,
+                                  User_Id,
+											 Create_Date,
+											 Update_Date
 									  ) VALUES (
+                                  @Id,
 											 @Title,
 											 @Description,
-											 @ImgUrl
+											 @ImgUrl,
+                                  @UserId,
+											 @CreateDate,
+											 @UpdateDate
 									  );
-									  SELECT LAST_INSERT_ID();";
+
+									  SELECT *
+									    FROM Post
+									ORDER BY Create_Date DESC
+									   LIMIT 1;";
 
 				using var connection = _dbContext.CreateConnection();
 
-				var insertedId = await connection.ExecuteScalarAsync<int>(query, new
+				var date = DateTime.UtcNow.AddHours(-3);
+
+				var insertedPost = await connection.QuerySingleAsync<Post>(query, new
 				{
+					Id = Guid.NewGuid(),
 					post.Title,
 					post.Description,
-					post.ImgUrl
+					post.ImgUrl,
+					UserId = userId,
+					CreateDate = date,
+					UpdateDate = date
 				});
 
-				var res = await connection.QuerySingleAsync<Post>("SELECT * FROM Post WHERE id = @Id", new
-				{
-					Id = insertedId
-				});
-
-				return res;
+				return insertedPost;
 			}
 			catch (Exception ex)
 			{
@@ -80,15 +93,15 @@ namespace Publink.Rest.Repository
 			}
 		}
 
-		public async Task<Post?> GetById(int id)
+		public async Task<Post?> GetById(Guid id)
 		{
 			try
 			{
 				_logger.LogInformation("Getting post with id {Id} in the database", id);
 
 				const string query = @"SELECT *
-                         FROM Post
-                        WHERE id = @id";
+				                         FROM Post
+				                        WHERE id = @id";
 
 				using var connection = _dbContext.CreateConnection();
 
@@ -99,11 +112,37 @@ namespace Publink.Rest.Repository
 
 				_logger.LogError("Post with id {Id} not found", id);
 				return null;
-
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError("Error while getting post with id {Id} on the database: {Message}", id, string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace));
+				throw;
+			}
+		}
+
+		public async Task<IList<Post>> GetAllPostsByUserId(Guid userId)
+		{
+			try
+			{
+				_logger.LogInformation("Getting all posts with id {userId} in the database", userId);
+
+				const string query = @"SELECT *
+											    FROM Post AS p
+											   WHERE p.User_Id = @UserId
+											ORDER BY Create_Date DESC;";
+
+				using var connection = _dbContext.CreateConnection();
+
+				var posts = await connection.QueryAsync<Post>(query, new
+				{
+					UserId = userId
+				});
+
+				return posts.ToList();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError("Error while getting all posts from user with id {userId} on the database: {Message}", userId, string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace));
 				throw;
 			}
 		}

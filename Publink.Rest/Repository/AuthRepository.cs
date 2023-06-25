@@ -60,7 +60,6 @@ namespace Publink.Rest.Repository
 
 				var user = new User
 				{
-					Id = Guid.NewGuid(),
 					Email = userRegisterDto.Email,
 					Username = userRegisterDto.Username,
 					PasswordHash = userRegisterDto.Password.WithSalt(salt).ToHash(),
@@ -76,20 +75,18 @@ namespace Publink.Rest.Repository
 											            Role,
 											            Salt
 											        ) VALUES (
-															@Id,
+															UUID(),
 															@Email,
 															@Username,
 															@PasswordHash,
 															@Role,
 															@Salt
-										             );
-											   SELECT LAST_INSERT_ID();";
+										             );";
 
 				using var connection = _dbContext.CreateConnection();
 
-				var insertedId = await connection.ExecuteScalarAsync<string>(query, new
+				await connection.QueryAsync(query, new
 				{
-					user.Id,
 					user.Email,
 					user.Username,
 					user.PasswordHash,

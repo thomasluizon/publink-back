@@ -6,8 +6,9 @@ namespace Publink.Rest.Interfaces.Services
 	public interface IPostService
 	{
 		Task<IList<Post>> GetAllRandom();
-		Task<Post> Create(PostDto post);
-		Task<Post?> GetById(int id);
-		Task<IList<Post>> GetByIdAndRandom(int id, int randomLength);
+		Task<Post> Create(PostDto post, Guid userId);
+		Task<Post?> GetById(Guid id);
+		Task<IList<Post>> GetByIdAndRandom(Guid id, int randomLength);
+		Task<IList<Post>> GetAllPostsByUserId(Guid userId);
 	}
 }
