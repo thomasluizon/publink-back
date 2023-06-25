@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Publink.Rest.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Publink.Rest.Interfaces.Services;
 using Publink.Rest.Models.Dto;
 
 namespace Publink.Rest.Controllers
 {
 	[Route("[controller]/[action]")]
 	[ApiController]
+	[Authorize]
 	public class PostController : ControllerBase
 	{
 		private readonly IPostService _postService;
@@ -16,6 +18,7 @@ namespace Publink.Rest.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllRandomPosts()
 		{
 			var posts = await _postService.GetAllRandom();
@@ -38,7 +41,7 @@ namespace Publink.Rest.Controllers
 
 			if (!res.Any())
 			{
-				return BadRequest(res);
+				return NotFound(res);
 			}
 
 			return Ok(res);

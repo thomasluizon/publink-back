@@ -1,7 +1,5 @@
-using Publink.Rest.Context;
-using Publink.Rest.Interfaces;
-using Publink.Rest.Repository;
-using Publink.Rest.Services;
+using Publink.Rest.Extensions;
+using Publink.Rest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,24 +8,26 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: MyAllowSpecificOrigins,
-							builder =>
-							{
-								builder.AllowAnyOrigin();
-								builder.AllowAnyHeader();
-								builder.AllowAnyMethod();
-							});
+	builder =>
+	{
+		builder.AllowAnyOrigin();
+		builder.AllowAnyHeader();
+		builder.AllowAnyMethod();
+	});
 });
 
 builder.Services.AddControllers();
 
+var jwt = new Jwt();
+builder.Configuration.GetSection("Jwt").Bind(jwt);
+
+builder.Services
+	.AddAuth(jwt)
+	.AddServices()
+	.AddConfiguration(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<DapperContext>();
-
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<IPostService, PostService>();
-
 
 var app = builder.Build();
 
@@ -38,6 +38,7 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

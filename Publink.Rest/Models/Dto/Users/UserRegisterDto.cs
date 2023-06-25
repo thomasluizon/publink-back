@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Publink.Rest.Enums;
 
-namespace Publink.Rest.Models
+namespace Publink.Rest.Models.Dto.Users
 {
-	public class User
+	public class UserRegisterDto
 	{
-		[Required]
-		public Guid Id { get; set; }
-
 		[Required]
 		[EmailAddress]
 		public string? Email { get; set; }
@@ -17,8 +13,5 @@ namespace Publink.Rest.Models
 
 		[Required]
 		public string? Password { get; set; }
-
-		[Required]
-		public Roles Role { get; set; }
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Publink.Rest.Context;
-using Publink.Rest.Interfaces;
+using Publink.Rest.Interfaces.Repository;
 using Publink.Rest.Models;
 using Publink.Rest.Models.Dto;
 
@@ -12,7 +12,7 @@ namespace Publink.Rest.Repository
 		private readonly ILogger _logger;
 		private readonly string _baseLogErrorMessage;
 
-		public PostRepository(ILogger logger, DapperContext dbContext)
+		public PostRepository(ILogger<PostRepository> logger, DapperContext dbContext)
 		{
 			_dbContext = dbContext;
 			_logger = logger;
@@ -25,7 +25,7 @@ namespace Publink.Rest.Repository
 			{
 				_logger.LogDebug("Getting all posts from database");
 
-				var query = "SELECT * FROM Post";
+				const string query = "SELECT * FROM Post";
 
 				using var connection = _dbContext.CreateConnection();
 
@@ -35,7 +35,7 @@ namespace Publink.Rest.Repository
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError($"Error while getting all posts from database: {string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace)}");
+				_logger.LogError("Error while getting all posts from database: {Message}", string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace));
 				throw;
 			}
 		}
@@ -44,9 +44,9 @@ namespace Publink.Rest.Repository
 		{
 			try
 			{
-				_logger.LogDebug($"Creating post with title: {post.Title} in the database");
+				_logger.LogDebug("Creating post with title: {Title} in the database", post.Title);
 
-				var query = @"INSERT INTO Post (
+				const string query = @"INSERT INTO Post (
 											 title,
 											 description,
 											 imgUrl
@@ -75,7 +75,7 @@ namespace Publink.Rest.Repository
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError($"Error while creating new post on the database: {string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace)}");
+				_logger.LogError("Error while creating new post on the database: {Message}", string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace));
 				throw;
 			}
 		}
@@ -84,9 +84,9 @@ namespace Publink.Rest.Repository
 		{
 			try
 			{
-				_logger.LogDebug($"Getting post with id {id} in the database");
+				_logger.LogDebug("Getting post with id {Id} in the database", id);
 
-				var query = @"SELECT *
+				const string query = @"SELECT *
                          FROM Post
                         WHERE id = @id";
 
@@ -94,17 +94,15 @@ namespace Publink.Rest.Repository
 
 				var post = await connection.QueryFirstOrDefaultAsync<Post>(query, new { id });
 
-				if (post == null)
-				{
-					_logger.LogError($"Post with id {id} not found");
-					return null;
-				}
+				if (post != null) return post;
 
-				return post;
+				_logger.LogError("Post with id {Id} not found", id);
+				return null;
+
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError($"Error while getting post with id {id} on the database: {string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace)}");
+				_logger.LogError("Error while getting post with id {Id} on the database: {Message}", id, string.Format(_baseLogErrorMessage, ex.Message, ex.StackTrace));
 				throw;
 			}
 		}

@@ -5,14 +5,12 @@ namespace Publink.Rest.Context
 {
 	public class DapperContext
 	{
-		private readonly IConfiguration _configuration;
 		private readonly string? _connectionString;
 		private readonly ILogger _logger;
 
-		public DapperContext(IConfiguration configuration, ILogger logger)
+		public DapperContext(IConfiguration configuration, ILogger<DapperContext> logger)
 		{
-			_configuration = configuration;
-			_connectionString = _configuration.GetConnectionString("DatabaseConnection");
+			_connectionString = configuration.GetConnectionString("DatabaseConnection");
 			_logger = logger;
 		}
 
@@ -26,7 +24,7 @@ namespace Publink.Rest.Context
 			} 
 			catch (Exception ex)
 			{
-				_logger.LogError($"Error while connecting to database: Message => {ex.Message} - Stack Trace => {ex.StackTrace}");
+				_logger.LogError("Error while connecting to database: Message => {Message} - Stack Trace => {StackTrace}", ex.Message, ex.StackTrace);
 				throw;
 			}
 		}

@@ -4,12 +4,16 @@ namespace Publink.Rest.Models
 {
 	public class Post
 	{
+		[Required]
 		public int Id { get; set; }
 
-		public string Title { get; set; }
+		[Required]
+		public string? Title { get; set; }
 
-		public string Description { get; set; }
+		[Required]
+		public string? Description { get; set; }
 
-		public string ImgUrl { get; set; }
+		[Required]
+		public string? ImgUrl { get; set; }
 	}
 }
