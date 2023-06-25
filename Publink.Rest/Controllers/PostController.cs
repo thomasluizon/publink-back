@@ -11,10 +11,12 @@ namespace Publink.Rest.Controllers
 	public class PostController : ControllerBase
 	{
 		private readonly IPostService _postService;
+		private readonly ITokenService _tokenService;
 
-		public PostController(IPostService postService)
+		public PostController(IPostService postService, ITokenService tokenService)
 		{
 			_postService = postService;
+			_tokenService = tokenService;
 		}
 
 		[HttpGet]

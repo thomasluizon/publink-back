@@ -21,7 +21,7 @@ namespace Publink.Rest.Repository
 				{
 					Email = "thomaslrgregorio@gmail.com",
 					Password = "teste123",
-					Id = Guid.NewGuid(),
+					Id = Guid.Parse("424cf181-4190-4b7f-a355-2b8faec6b691"),
 					Username = "thomasluizon",
 					Role = Roles.Admin
 				},

@@ -43,5 +43,20 @@ namespace Publink.Rest.Services
 
 			return tokenHandler.WriteToken(token);
 		}
+
+		public Guid GetUserIdByToken(string token)
+		{
+			if (token.StartsWith("Bearer "))
+			{
+				token = token[7..];
+			}
+
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var jwtToken = tokenHandler.ReadJwtToken(token);
+
+			var id = jwtToken.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value;
+
+			return id == null ? Guid.Empty : Guid.Parse(id);
+		}
 	}
 }
