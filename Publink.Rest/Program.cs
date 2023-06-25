@@ -1,42 +1,41 @@
-using Publink.Rest.Context;
-using Publink.Rest.Interfaces;
-using Publink.Rest.Services;
+using Publink.Rest.Extensions;
+using Publink.Rest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy(name: MyAllowSpecificOrigins,
-							builder =>
-							{
-								builder.AllowAnyOrigin();
-								builder.AllowAnyHeader();
-								builder.AllowAnyMethod();
-							});
+	options.AddPolicy(name: myAllowSpecificOrigins,
+	corsPolicyBuilder =>
+	{
+		corsPolicyBuilder.AllowAnyOrigin();
+		corsPolicyBuilder.AllowAnyHeader();
+		corsPolicyBuilder.AllowAnyMethod();
+	});
 });
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var jwt = new Jwt();
+builder.Configuration.GetSection("Jwt").Bind(jwt);
 
-builder.Services.AddSingleton<DapperContext>();
-
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<IPostService, PostService>();
-
+builder.Services
+	.AddAuth(jwt)
+	.AddServices()
+	.AddConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

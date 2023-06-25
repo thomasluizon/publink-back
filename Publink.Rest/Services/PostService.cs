@@ -1,5 +1,6 @@
 ﻿using Publink.Rest.Helpers;
-using Publink.Rest.Interfaces;
+using Publink.Rest.Interfaces.Repository;
+using Publink.Rest.Interfaces.Services;
 using Publink.Rest.Models;
 using Publink.Rest.Models.Dto;
 
@@ -8,14 +9,18 @@ namespace Publink.Rest.Services
 	public class PostService : IPostService
 	{
 		private readonly IPostRepository _postsRepository;
+		private readonly ILogger _logger;
 
-		public PostService(IPostRepository postsRepository)
+		public PostService(IPostRepository postsRepository, ILogger<PostService> logger)
 		{
 			_postsRepository = postsRepository;
+			_logger = logger;
 		}
 
 		public async Task<Post> Create(PostDto post)
 		{
+			_logger.LogInformation("Calling create on post repository with title {Title}", post.Title);
+
 			var res = await _postsRepository.Create(post);
 
 			return res;
@@ -23,6 +28,8 @@ namespace Publink.Rest.Services
 
 		public async Task<IList<Post>> GetAllRandom()
 		{
+			_logger.LogInformation("Getting all random posts");
+
 			var posts = await _postsRepository.GetAll();
 
 			if (!posts.Any())
@@ -48,15 +55,20 @@ namespace Publink.Rest.Services
 			return randomPosts;
 		}
 
-		public async Task<Post> GetById(int id)
+		public async Task<Post?> GetById(int id)
 		{
+			_logger.LogInformation("Getting post with id {Id}", id);
+
 			var post = await _postsRepository.GetById(id);
 
-			return post;
+			return post ?? null;
 		}
 
 		public async Task<IList<Post>> GetByIdAndRandom(int id, int randomLength)
 		{
+
+			_logger.LogInformation("Getting post with id {Id}, and {AmountOfPosts} random posts", id, randomLength);
+
 			var post = await GetById(id);
 
 			if (post == null)
