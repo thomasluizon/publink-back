@@ -16,7 +16,7 @@ namespace Publink.Rest.Controllers
 		[HttpGet]
 		public IActionResult Ping()
 		{
-			_logger.LogDebug("Calling ping controller");
+			_logger.LogInformation("Calling ping controller");
 
 			return Content("ok");
 		}

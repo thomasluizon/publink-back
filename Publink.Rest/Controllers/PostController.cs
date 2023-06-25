@@ -18,7 +18,6 @@ namespace Publink.Rest.Controllers
 		}
 
 		[HttpGet]
-		[AllowAnonymous]
 		public async Task<IActionResult> GetAllRandomPosts()
 		{
 			var posts = await _postService.GetAllRandom();

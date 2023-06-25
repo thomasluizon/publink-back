@@ -3,16 +3,16 @@ using Publink.Rest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy(name: MyAllowSpecificOrigins,
-	builder =>
+	options.AddPolicy(name: myAllowSpecificOrigins,
+	corsPolicyBuilder =>
 	{
-		builder.AllowAnyOrigin();
-		builder.AllowAnyHeader();
-		builder.AllowAnyMethod();
+		corsPolicyBuilder.AllowAnyOrigin();
+		corsPolicyBuilder.AllowAnyHeader();
+		corsPolicyBuilder.AllowAnyMethod();
 	});
 });
 
@@ -26,15 +26,12 @@ builder.Services
 	.AddServices()
 	.AddConfiguration(builder.Configuration);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

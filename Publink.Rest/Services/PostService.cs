@@ -19,7 +19,7 @@ namespace Publink.Rest.Services
 
 		public async Task<Post> Create(PostDto post)
 		{
-			_logger.LogDebug("Calling create on post repository with title {Title}", post.Title);
+			_logger.LogInformation("Calling create on post repository with title {Title}", post.Title);
 
 			var res = await _postsRepository.Create(post);
 
@@ -28,7 +28,7 @@ namespace Publink.Rest.Services
 
 		public async Task<IList<Post>> GetAllRandom()
 		{
-			_logger.LogDebug("Getting all random posts");
+			_logger.LogInformation("Getting all random posts");
 
 			var posts = await _postsRepository.GetAll();
 
@@ -57,7 +57,7 @@ namespace Publink.Rest.Services
 
 		public async Task<Post?> GetById(int id)
 		{
-			_logger.LogDebug("Getting post with id {Id}", id);
+			_logger.LogInformation("Getting post with id {Id}", id);
 
 			var post = await _postsRepository.GetById(id);
 
@@ -67,7 +67,7 @@ namespace Publink.Rest.Services
 		public async Task<IList<Post>> GetByIdAndRandom(int id, int randomLength)
 		{
 
-			_logger.LogDebug("Getting post with id {Id}, and {AmountOfPosts} random posts", id, randomLength);
+			_logger.LogInformation("Getting post with id {Id}, and {AmountOfPosts} random posts", id, randomLength);
 
 			var post = await GetById(id);
 

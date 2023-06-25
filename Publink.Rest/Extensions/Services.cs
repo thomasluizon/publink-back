@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Publink.Rest.Context;
 using Publink.Rest.Interfaces.Repository;
 using Publink.Rest.Interfaces.Services;
@@ -41,6 +43,35 @@ namespace Publink.Rest.Extensions
 
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
+			services.AddEndpointsApiExplorer();
+			services.AddSwaggerGen(c =>
+			{
+				var jwtSecurityScheme = new OpenApiSecurityScheme
+				{
+					Description = "Enter token",
+					Name = "Authorization",
+					In = ParameterLocation.Header,
+					Type = SecuritySchemeType.Http,
+					Scheme = JwtBearerDefaults.AuthenticationScheme,
+					BearerFormat = "JWT",
+
+					Reference = new OpenApiReference
+					{
+						Id = JwtBearerDefaults.AuthenticationScheme,
+						Type = ReferenceType.SecurityScheme
+					}
+				};
+
+				c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+				c.AddSecurityRequirement(new OpenApiSecurityRequirement
+				{
+					{
+						jwtSecurityScheme, Array.Empty<string>()
+					}
+				});
+			});
+
 			services.AddSingleton<DapperContext>();
 
 			services.AddScoped<IPostRepository, PostRepository>();

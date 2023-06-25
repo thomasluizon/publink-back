@@ -23,7 +23,7 @@ namespace Publink.Rest.Repository
 		{
 			try
 			{
-				_logger.LogDebug("Getting all posts from database");
+				_logger.LogInformation("Getting all posts from database");
 
 				const string query = "SELECT * FROM Post";
 
@@ -44,7 +44,7 @@ namespace Publink.Rest.Repository
 		{
 			try
 			{
-				_logger.LogDebug("Creating post with title: {Title} in the database", post.Title);
+				_logger.LogInformation("Creating post with title: {Title} in the database", post.Title);
 
 				const string query = @"INSERT INTO Post (
 											 title,
@@ -84,7 +84,7 @@ namespace Publink.Rest.Repository
 		{
 			try
 			{
-				_logger.LogDebug("Getting post with id {Id} in the database", id);
+				_logger.LogInformation("Getting post with id {Id} in the database", id);
 
 				const string query = @"SELECT *
                          FROM Post
