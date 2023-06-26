@@ -18,5 +18,11 @@ namespace Publink.Rest.Models
 
 		[Required]
 		public Guid UserId { get; set; }
+
+		[Required]
+		public DateTime CreateDate { get; set; }
+
+		[Required]
+		public DateTime UpdateDate { get; set; }
 	}
 }

@@ -37,7 +37,7 @@ namespace Publink.Rest.Services
 				return new List<Post>();
 			}
 
-			var lastPost = posts.OrderByDescending(x => x.Id).ToList().First();
+			var lastPost = posts.OrderByDescending(x => x.CreateDate).ToList().First();
 
 			var randomPosts = new List<Post>
 			{
