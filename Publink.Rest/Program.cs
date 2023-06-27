@@ -18,8 +18,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-var jwt = new Jwt();
-builder.Configuration.GetSection("Jwt").Bind(jwt);
+var jwt = new Jwt
+{
+	Secret = builder.Configuration.GetSection("JwtSecret").Value
+};
 
 builder.Services
 	.AddAuth(jwt)

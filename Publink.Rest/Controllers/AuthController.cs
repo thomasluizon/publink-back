@@ -10,12 +10,10 @@ namespace Publink.Rest.Controllers
 	public class AuthController : ControllerBase
 	{
 		private readonly IAuthService _authService;
-		private readonly ITokenService _tokenService;
 
-		public AuthController(IAuthService authService, ITokenService tokenService)
+		public AuthController(IAuthService authService)
 		{
 			_authService = authService;
-			_tokenService = tokenService;
 		}
 
 		[HttpPost]

@@ -87,7 +87,12 @@ namespace Publink.Rest.Extensions
 
 		public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.Configure<Jwt>(configuration.GetSection("Jwt"));
+			var jwtSecret = configuration.GetValue<string>("JwtSecret");
+
+			services.Configure<Jwt>(options =>
+			{
+				options.Secret = jwtSecret;
+			});
 
 			return services;
 		}
