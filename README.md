@@ -1,7 +1,5 @@
-# publink-back
-🖥️ Back-End do projeto Publink - C# - ASP.NET Core
+# Publink - API
 
-## Integrantes
-- Thomas Luizon Rodrigues Gregorio
-- Mariana Oliveira Ferreira
-- Mayumi Melo Oshiro
+![GitHub](https://img.shields.io/github/license/thomasluizon/publink-back)
+
+🖥️ Publink Web Api - C# - ASP.NET Core
