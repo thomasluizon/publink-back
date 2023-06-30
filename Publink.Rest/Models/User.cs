@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Publink.Rest.Enums;
+using Publink.Rest.Models.Responses;
 
 namespace Publink.Rest.Models
 {
@@ -23,5 +24,14 @@ namespace Publink.Rest.Models
 
 		[Required]
 		public string? Salt { get; set; }
+
+		public UserResponse ToUserResponse()
+		{
+			return new UserResponse
+			{
+				Id = Id,
+				Username = Username
+			};
+		}
 	}
 }

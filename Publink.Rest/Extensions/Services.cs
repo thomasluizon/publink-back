@@ -76,9 +76,11 @@ namespace Publink.Rest.Extensions
 			services.AddScoped<IPostRepository, PostRepository>();
 			services.AddScoped<IPostService, PostService>();
 
-			services.AddSingleton<IAuthRepository, AuthRepository>();
-			//services.AddScoped<IAuthRepository, AuthRepository>();
+			services.AddScoped<IAuthRepository, AuthRepository>();
 			services.AddScoped<IAuthService, AuthService>();
+
+			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IUserService, UserService>();
 
 			services.AddScoped<ITokenService, TokenService>();
 

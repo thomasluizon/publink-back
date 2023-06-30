@@ -40,9 +40,9 @@ namespace Publink.Rest.Controllers
 		}
 
 		[HttpGet("{id:guid}")]
-		public async Task<IActionResult> GetByIdAndRandom([FromRoute] Guid id)
+		public async Task<IActionResult> GetPostAndUserByIdAndRandom([FromRoute] Guid id)
 		{
-			var res = await _postService.GetByIdAndRandom(id, 4);
+			var res = await _postService.GetPostAndUserByIdAndRandom(id, 4);
 
 			if (!res.Any())
 			{

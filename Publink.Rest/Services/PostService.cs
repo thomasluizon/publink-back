@@ -3,17 +3,20 @@ using Publink.Rest.Interfaces.Repository;
 using Publink.Rest.Interfaces.Services;
 using Publink.Rest.Models;
 using Publink.Rest.Models.Dto;
+using Publink.Rest.Models.Responses;
 
 namespace Publink.Rest.Services
 {
-	public class PostService : IPostService
+    public class PostService : IPostService
 	{
 		private readonly IPostRepository _postsRepository;
 		private readonly ILogger _logger;
+		private readonly IUserService _userService;
 
-		public PostService(IPostRepository postsRepository, ILogger<PostService> logger)
+		public PostService(IPostRepository postsRepository,  IUserService userService, ILogger<PostService> logger)
 		{
 			_postsRepository = postsRepository;
+			_userService = userService;
 			_logger = logger;
 		}
 
@@ -92,6 +95,28 @@ namespace Publink.Rest.Services
 			}
 
 			return posts;
+		}
+
+		public async Task<IList<PostAndUserResponse>> GetPostAndUserByIdAndRandom(Guid id, int randomLength)
+		{
+			var posts = await GetByIdAndRandom(id, randomLength);
+
+			var response = new List<PostAndUserResponse>();
+
+			foreach (var post in posts)
+			{
+				var user = await _userService.GetByIdAsync(post.UserId);
+
+				var postAndUserResponse = new PostAndUserResponse
+				{
+					User = user.ToUserResponse(),
+					Post = post
+				};
+
+				response.Add(postAndUserResponse);
+			}
+
+			return response;
 		}
 
 		public async Task<Post?> GetById(Guid id)

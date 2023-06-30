@@ -3,10 +3,11 @@ using Publink.Rest.Interfaces.Repository;
 using Publink.Rest.Interfaces.Services;
 using Publink.Rest.Models;
 using Publink.Rest.Models.Dto.Users;
+using Publink.Rest.Models.Responses;
 
 namespace Publink.Rest.Services
 {
-	public class AuthService : IAuthService
+    public class AuthService : IAuthService
 	{
 		private readonly IAuthRepository _authRepository;
 		private readonly ILogger _logger;
@@ -19,7 +20,7 @@ namespace Publink.Rest.Services
 			_logger = logger;
 		}
 
-		public async Task<Tuple<string, UserResponseDto>?> Login(UserLoginDto userLoginDto)
+		public async Task<Tuple<string, UserResponse>?> Login(UserLoginDto userLoginDto)
 		{
 			var user = await GetUser(userLoginDto.Email, userLoginDto.Password);
 
@@ -30,7 +31,7 @@ namespace Publink.Rest.Services
 
 			var token = _tokenService.GenerateToken(user);
 
-			return new Tuple<string, UserResponseDto>(token, new UserResponseDto
+			return new Tuple<string, UserResponse>(token, new UserResponse
 			{
 				Username = user.Username,
 				Id = user.Id

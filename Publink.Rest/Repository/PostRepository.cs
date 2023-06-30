@@ -111,6 +111,7 @@ namespace Publink.Rest.Repository
 					return post;
 
 				_logger.LogError("Post with id {Id} not found", id);
+
 				return null;
 			}
 			catch (Exception ex)
